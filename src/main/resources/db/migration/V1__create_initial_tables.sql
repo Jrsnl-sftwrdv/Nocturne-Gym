@@ -1,0 +1,9 @@
+CREATE TABLE members (
+    id BIGINT AUTO_INCREMENT PRIMARY KEY,
+    name VARCHAR(100) NOT NULL,
+    card_uid VARCHAR(50) NOT NULL UNIQUE,
+    created_at DATETIME(6) NOT NULL,
+    sms_number VARCHAR(20) NOT NULL,
+    gender VARCHAR(20) NOT NULL,
+    email VARCHAR(100) NOT NULL
+);
