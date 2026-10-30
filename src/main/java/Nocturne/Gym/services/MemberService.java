@@ -1,6 +1,7 @@
 package Nocturne.Gym.services;
 import org.springframework.stereotype.Service;
 
+import Nocturne.Gym.ExceptionHandler.DuplicateCardUidException;
 import Nocturne.Gym.ExceptionHandler.MemberNotFoundException;
 import Nocturne.Gym.models.Member;
 import Nocturne.Gym.models.DTOS.Requests.CreateMemberRequest;
@@ -19,6 +20,11 @@ public class MemberService {
     }
 
     public MemberResponseDTO createMember(CreateMemberRequest request){ 
+    
+        if(memberRepository.findByCardUid(request.getCardUid()).isPresent()){ 
+        throw new DuplicateCardUidException("Card UID is already registered"); 
+    }
+
     Member member = new Member(); 
     member.setName(request.getName());
     member.setGender(request.getGender());
