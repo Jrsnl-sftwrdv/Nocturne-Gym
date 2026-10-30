@@ -3,6 +3,7 @@ import org.springframework.stereotype.Service;
 
 import Nocturne.Gym.ExceptionHandler.MemberNotFoundException;
 import Nocturne.Gym.models.Member;
+import Nocturne.Gym.models.DTOS.Requests.CreateMemberRequest;
 import Nocturne.Gym.models.DTOS.Requests.UpdateMemberRequest;
 import Nocturne.Gym.models.DTOS.Responses.MemberResponseDTO;
 import Nocturne.Gym.repositories.MemberRepository;
@@ -17,8 +18,14 @@ public class MemberService {
         this.memberRepository = memberRepository;
     }
 
-    public MemberResponseDTO createMember(Member member){ 
-    Member savedMember = memberRepository.save(member);
+    public MemberResponseDTO createMember(CreateMemberRequest request){ 
+    Member member = new Member(); 
+    member.setName(request.getName());
+    member.setGender(request.getGender());
+    member.setCardUid(request.getCardUid());
+    member.setEmail(request.getEmail());
+    member.setSmsNumber(request.getSmsNumber());
+    Member savedMember = memberRepository.save(member); 
     return MemberResponseDTO.from(savedMember); 
     }
 
