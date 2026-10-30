@@ -14,7 +14,6 @@ import lombok.Setter;
 @NoArgsConstructor 
 public class UpdateMemberRequest {
     
-
     @NotBlank(message = "Name is required")
     @Size(max = 100, message = "Name must be at most 100 characters")
     private String name; 
@@ -30,9 +29,6 @@ public class UpdateMemberRequest {
 
     @NotNull(message = "Gender is required")
     private Gender gender; 
-
-
-
 
 
 }

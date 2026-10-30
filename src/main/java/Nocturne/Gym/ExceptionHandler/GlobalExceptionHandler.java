@@ -23,6 +23,13 @@ public class GlobalExceptionHandler {
         return ResponseEntity.status(404).body(error);
     }
 
+    @ExceptionHandler(DuplicateCardUidException.class)
+    public ResponseEntity<Map<String, String>>duplicatecard(DuplicateCardUidException dcue){ 
+        Map<String, String> error = new HashMap<>(); 
+        error.put("message", dcue.getMessage());
+        return  ResponseEntity.status(409).body(error); 
+    }
+
 
 
 
