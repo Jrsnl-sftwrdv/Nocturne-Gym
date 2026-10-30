@@ -25,7 +25,7 @@ public class MemberService {
     @Transactional 
     public MemberResponseDTO createMember(CreateMemberRequest request){ 
     
-        if(memberRepository.findByCardUid(request.getCardUid()).isPresent()){ 
+        if(memberRepository.existByUid(request.getCardUid())){ 
         throw new DuplicateCardUidException("Card UID is already registered"); 
     }
 
@@ -50,19 +50,7 @@ public class MemberService {
     }
 
     @Transactional 
-    public MemberResponseDTO updateMember(Long id,  UpdateMemberRequest request){ 
-        Member foundMember = memberRepository.findById(id).orElseThrow(() -> new MemberNotFoundException("Member not found with id: " + id)); 
-        foundMember.setEmail(request.getEmail());
-        foundMember.setGender(request.getGender());
-        foundMember.setName(request.getName());
-        foundMember.setSmsNumber(request.getSms());
-        Member updatedMember = memberRepository.save(foundMember); 
-        return MemberResponseDTO.from(updatedMember); 
-    }
-
-
-    @Transactional 
-    public MemberResponseDTO patchMember(Long id, PatchMemberRequest request){
+    public MemberResponseDTO updateMember(Long id, PatchMemberRequest request){
         Member foundMember = memberRepository.findById(id).orElseThrow(() -> new MemberNotFoundException("Member not found with id: " + id));
 
         if(request.getName() != null){foundMember.setName(request.getName());}

@@ -12,4 +12,6 @@ public interface MemberRepository extends JpaRepository<Member, Long>{
     
    Optional<Member> findByCardUid(String cardUid);
 
+   Boolean existByUid(String cardUID); 
+
 }

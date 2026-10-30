@@ -4,7 +4,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import Nocturne.Gym.models.DTOS.Requests.CreateMemberRequest;
-import Nocturne.Gym.models.DTOS.Requests.PatchMemberRequest;
+import Nocturne.Gym.models.DTOS.Requests.UpdateMemberRequest;
 import Nocturne.Gym.models.DTOS.Requests.UpdateMemberRequest;
 import Nocturne.Gym.models.DTOS.Responses.MemberResponseDTO;
 import Nocturne.Gym.services.MemberService;
@@ -56,19 +56,10 @@ public class MemberController {
      return ResponseEntity.noContent().build();
      }
 
-     @PutMapping("/{id}")
-     public ResponseEntity<MemberResponseDTO> updateMember(@PathVariable Long id, @Valid @RequestBody UpdateMemberRequest request){ 
-      MemberResponseDTO updatedMember =  memberService.updateMember(id, request); 
-        return ResponseEntity.ok(updatedMember); 
-     }
-
      @PatchMapping("/{id}")
-     public ResponseEntity<MemberResponseDTO> patchMember(@PathVariable Long id, @Valid @RequestBody PatchMemberRequest request){ 
-     MemberResponseDTO patchedMember = memberService.patchMember(id, request); 
-     return ResponseEntity.ok(patchedMember); 
+     public ResponseEntity<MemberResponseDTO> patchMember(@PathVariable Long id, @Valid @RequestBody UpdateMemberRequest request){ 
+     MemberResponseDTO updatedMember = memberService.updateMember(id, request); 
+     return ResponseEntity.ok(updatedMember); 
      }
-
-
-
 
 }
