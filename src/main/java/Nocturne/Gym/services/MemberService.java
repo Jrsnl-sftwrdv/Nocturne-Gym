@@ -13,8 +13,13 @@ public class MemberService {
 
     private final MemberRepository memberRepository; 
 
-   public  MemberService(MemberRepository memberRepository){ 
+   public MemberService(MemberRepository memberRepository){ 
         this.memberRepository = memberRepository;
+    }
+
+    public MemberResponseDTO createMember(Member member){ 
+    Member savedMember = memberRepository.save(member);
+    return MemberResponseDTO.from(savedMember); 
     }
 
     public List<MemberResponseDTO> getAllMembers(){ 
