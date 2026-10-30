@@ -17,13 +17,14 @@ public class MemberService {
         this.memberRepository = memberRepository;
     }
 
-    public List<Member> getAllMembers(){ 
-        return memberRepository.findAll(); 
+    public List<MemberResponseDTO> getAllMembers(){ 
+        return memberRepository.findAll().stream().map(MemberResponseDTO::from).toList();
     }
     
 
- public Member getMemberById(Long id){ 
-        return  memberRepository.findById(id).orElseThrow(() -> new MemberNotFoundException("Member not found")); 
+ public MemberResponseDTO getMemberById(Long id){ 
+        Member member =  memberRepository.findById(id).orElseThrow(() -> new MemberNotFoundException("Member not found")); 
+        return MemberResponseDTO.from(member); 
     }
 
     public MemberResponseDTO updateMember(Long id,  UpdateMemberRequest request){ 
@@ -36,6 +37,12 @@ public class MemberService {
         return MemberResponseDTO.from(updatedMember); 
     }
 
+    public void deleteMember(Long id){ 
+        if(!memberRepository.existsById(id)){ 
+            throw new MemberNotFoundException("Member not found"); 
+        }
+        memberRepository.deleteById(id);
+    }
 
 
 
