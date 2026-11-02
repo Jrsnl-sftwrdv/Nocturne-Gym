@@ -5,7 +5,6 @@ import Nocturne.Gym.ExceptionHandler.DuplicateCardUidException;
 import Nocturne.Gym.ExceptionHandler.MemberNotFoundException;
 import Nocturne.Gym.models.Member;
 import Nocturne.Gym.models.DTOS.Requests.CreateMemberRequest;
-import Nocturne.Gym.models.DTOS.Requests.PatchMemberRequest;
 import Nocturne.Gym.models.DTOS.Requests.UpdateMemberRequest;
 import Nocturne.Gym.models.DTOS.Responses.MemberResponseDTO;
 import Nocturne.Gym.repositories.MemberRepository;
@@ -25,7 +24,7 @@ public class MemberService {
     @Transactional 
     public MemberResponseDTO createMember(CreateMemberRequest request){ 
     
-        if(memberRepository.existByUid(request.getCardUid())){ 
+        if(memberRepository.existsByCardUid(request.getCardUid())){ 
         throw new DuplicateCardUidException("Card UID is already registered"); 
     }
 
@@ -50,13 +49,13 @@ public class MemberService {
     }
 
     @Transactional 
-    public MemberResponseDTO updateMember(Long id, PatchMemberRequest request){
+    public MemberResponseDTO updateMember(Long id, UpdateMemberRequest request){
         Member foundMember = memberRepository.findById(id).orElseThrow(() -> new MemberNotFoundException("Member not found with id: " + id));
 
         if(request.getName() != null){foundMember.setName(request.getName());}
         if(request.getEmail() != null){foundMember.setEmail(request.getEmail());}
         if(request.getGender() != null){foundMember.setGender(request.getGender());}
-        if(request.getSms() != null){foundMember.setSmsNumber(request.getSms());}
+        if(request.getSmsNumber() != null){foundMember.setSmsNumber(request.getSmsNumber());}
         memberRepository.save(foundMember); 
         return MemberResponseDTO.from(foundMember); 
     }
@@ -67,8 +66,5 @@ public class MemberService {
         }
         memberRepository.deleteById(id);
     }
-    
-
-
     
 }

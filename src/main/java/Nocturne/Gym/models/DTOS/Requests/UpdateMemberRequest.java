@@ -20,7 +20,7 @@ public class UpdateMemberRequest {
 
     @Size(max = 20, message = "SMS number must be at most 20 characters")
     @Pattern(regexp = "^\\s*\\S.*$")
-    private String sms;     
+    private String smsNumber;     
 
     @Email(message = "Please enter a valid email")
     @Size(max = 100)
