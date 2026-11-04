@@ -2,7 +2,7 @@ package Nocturne.Gym.models.DTOS.Requests;
 
 import java.math.BigDecimal;
 
-import org.hibernate.sql.ast.tree.expression.DurationUnit;
+import Nocturne.Gym.models.DurationUnit;
 
 import jakarta.validation.constraints.DecimalMin;
 import jakarta.validation.constraints.Digits;

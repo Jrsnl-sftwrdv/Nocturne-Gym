@@ -30,18 +30,25 @@ public class MembershipPlanService {
         return MembershipPlanResponseDTO.from(plan); 
     }
 
+    @Transactional
+    public MembershipPlanResponseDTO getMembershipPlanById(Long id){ 
+            MembershipPlan plan = membershipPlanRepository.findById(id).orElseThrow(() -> new MembershipPlanNotFoundException("No plan found with id " + id));
+     return MembershipPlanResponseDTO.from(plan);
+    }
+
+
     @Transactional 
     public MembershipPlanResponseDTO createMembershipPlan(CreateMembershipPlanRequest request){ 
        if(membershipPlanRepository.existsByName(request.getName())){ 
-        throw new DuplicateMembershipPlanException("Membership plan already exist with the name" + request.getName()); 
+        throw new DuplicateMembershipPlanException("Membership plan already exist with the name " + request.getName()); 
        }
        MembershipPlan plan =  new MembershipPlan(); 
-       
-
-
-
-
-
+       plan.setName(request.getName());
+       plan.setDurationValue(request.getDurationValue());
+       plan.setDurationUnit(request.getDurationUnit());
+       plan.setPrice(request.getPrice());
+       MembershipPlan saved = membershipPlanRepository.save(plan); 
+       return  MembershipPlanResponseDTO.from(saved); 
     }
     
 
