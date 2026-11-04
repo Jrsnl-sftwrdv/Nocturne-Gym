@@ -6,6 +6,7 @@ import Nocturne.Gym.ExceptionHandler.DuplicateMembershipPlanException;
 import Nocturne.Gym.ExceptionHandler.MembershipPlanNotFoundException;
 import Nocturne.Gym.models.MembershipPlan;
 import Nocturne.Gym.models.DTOS.Requests.CreateMembershipPlanRequest;
+import Nocturne.Gym.models.DTOS.Requests.UpdateMembershipPlanRequestDTO;
 import Nocturne.Gym.models.DTOS.Responses.MembershipPlanResponseDTO;
 import Nocturne.Gym.repositories.MembershipPlanRepository;
 import jakarta.transaction.Transactional;
@@ -15,10 +16,12 @@ import java.util.*;
 @Service 
 public class MembershipPlanService {
     
+    private final Nocturne.Gym.repositories.MemberRepository memberRepository;
     private final MembershipPlanRepository membershipPlanRepository; 
 
-    public MembershipPlanService(MembershipPlanRepository a){ 
+    public MembershipPlanService(MembershipPlanRepository a, Nocturne.Gym.repositories.MemberRepository memberRepository){ 
         this.membershipPlanRepository = a;
+        this.memberRepository = memberRepository;
     }
 
     public List<MembershipPlanResponseDTO> getAllMembershipPlan(){ 
@@ -49,6 +52,24 @@ public class MembershipPlanService {
        plan.setPrice(request.getPrice());
        MembershipPlan saved = membershipPlanRepository.save(plan); 
        return  MembershipPlanResponseDTO.from(saved); 
+    }
+
+    @Transactional 
+    public MembershipPlanResponseDTO patchMembershipPlan(Long id, UpdateMembershipPlanRequestDTO request){
+    MembershipPlan foundPlan = membershipPlanRepository.findById(id).orElseThrow(() -> new MembershipPlanNotFoundException("No plan with id " + id)); 
+
+    if(request.getName() != null){
+        boolean isChanging = !request.getName().equalsIgnoreCase(foundPlan.getName());
+        if(isChanging && membershipPlanRepository.existsByName(request.getName())){ 
+            throw new DuplicateMembershipPlanException("Membership plan already exists with the name " + request.getName()); 
+        }
+        foundPlan.setName(request.getName());
+    }
+    if(request.getDurationUnit() != null){foundPlan.setDurationUnit(request.getDurationUnit());}
+    if(request.getDurationValue() != null){foundPlan.setDurationValue(request.getDurationValue());}
+    if(request.getPrice() != null){foundPlan.setPrice(request.getPrice());}
+    MembershipPlan updatedPlan = membershipPlanRepository.save(foundPlan);
+    return MembershipPlanResponseDTO.from(updatedPlan);
     }
     
 
