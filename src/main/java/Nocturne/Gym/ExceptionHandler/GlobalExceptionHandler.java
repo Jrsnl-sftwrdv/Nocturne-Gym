@@ -1,5 +1,7 @@
 package Nocturne.Gym.ExceptionHandler;
 
+import org.springframework.http.HttpStatus;
+import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
@@ -30,6 +32,27 @@ public class GlobalExceptionHandler {
         return  ResponseEntity.status(409).body(error); 
     }
 
+    @ExceptionHandler(MembershipPlanNotFoundException.class)
+        public ResponseEntity<Map<String, String>>membershipplannotfound(MembershipPlanNotFoundException mpnfe){ 
+            Map<String, String> error = new HashMap<>(); 
+            error.put("message", mpnfe.getMessage());
+            return  ResponseEntity.status(HttpStatus.NOT_FOUND).body(error); 
+        }
+
+    @ExceptionHandler(DuplicateMembershipPlanException.class)
+    public ResponseEntity<Map<String, String>> duplicatemembershipplan(DuplicateMembershipPlanException dmpe){ 
+        Map<String, String> error = new HashMap<>(); 
+        error.put("message", dmpe.getMessage());
+        return ResponseEntity.status(HttpStatus.CONFLICT).body(error); 
+    }
+
+
+
+
+
+
+
+    }
 
 
 
@@ -38,4 +61,3 @@ public class GlobalExceptionHandler {
 
 
 
-}
