@@ -73,7 +73,7 @@ public class MembershipPlanService {
     }
 
     @Transactional 
-    public void deletePlanby(Long id){ 
+    public void deleteMembershipPlan(Long id){ 
         if(!memberRepository.existsById(id)){ 
             memberRepository.deleteById(id);
         }

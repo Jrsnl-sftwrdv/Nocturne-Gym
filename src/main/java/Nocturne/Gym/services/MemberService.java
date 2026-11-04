@@ -9,7 +9,7 @@ import Nocturne.Gym.models.DTOS.Requests.CreateMemberRequest;
 import Nocturne.Gym.models.DTOS.Requests.UpdateMemberRequest;
 import Nocturne.Gym.models.DTOS.Responses.MemberResponseDTO;
 import Nocturne.Gym.repositories.MemberRepository;
-import Nocturne.Gym.repositories.MembershipPlanRepository;
+
 import jakarta.transaction.Transactional;
 
 import java.util.*;
@@ -65,7 +65,7 @@ public class MemberService {
     }
 
     @Transactional 
-    public void deleteMembershipPlan(Long id){  
+    public void deleteMember(Long id){  
         if(!membershipPlanRepository.existsById(id)){ 
             throw new MembershipPlanNotFoundException("No plan with id " + id); 
         }
