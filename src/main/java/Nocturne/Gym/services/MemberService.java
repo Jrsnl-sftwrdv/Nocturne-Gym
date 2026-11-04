@@ -3,11 +3,13 @@ import org.springframework.stereotype.Service;
 
 import Nocturne.Gym.ExceptionHandler.DuplicateCardUidException;
 import Nocturne.Gym.ExceptionHandler.MemberNotFoundException;
+import Nocturne.Gym.ExceptionHandler.MembershipPlanNotFoundException;
 import Nocturne.Gym.models.Member;
 import Nocturne.Gym.models.DTOS.Requests.CreateMemberRequest;
 import Nocturne.Gym.models.DTOS.Requests.UpdateMemberRequest;
 import Nocturne.Gym.models.DTOS.Responses.MemberResponseDTO;
 import Nocturne.Gym.repositories.MemberRepository;
+import Nocturne.Gym.repositories.MembershipPlanRepository;
 import jakarta.transaction.Transactional;
 
 import java.util.*;
@@ -15,10 +17,12 @@ import java.util.*;
 @Service 
 public class MemberService {
 
+    private final Nocturne.Gym.repositories.MembershipPlanRepository membershipPlanRepository;
     private final MemberRepository memberRepository; 
 
-   public MemberService(MemberRepository memberRepository){ 
+   public MemberService(MemberRepository memberRepository, Nocturne.Gym.repositories.MembershipPlanRepository membershipPlanRepository){ 
         this.memberRepository = memberRepository;
+        this.membershipPlanRepository = membershipPlanRepository;
     }
 
     @Transactional 
@@ -60,11 +64,12 @@ public class MemberService {
         return MemberResponseDTO.from(foundMember); 
     }
 
-    public void deleteMember(Long id){ 
-        if(!memberRepository.existsById(id)){ 
-            throw new MemberNotFoundException("Member not found with id: " + id); 
+    @Transactional 
+    public void deleteMembershipPlan(Long id){  
+        if(!membershipPlanRepository.existsById(id)){ 
+            throw new MembershipPlanNotFoundException("No plan with id " + id); 
         }
-        memberRepository.deleteById(id);
+        membershipPlanRepository.deleteById(id);
     }
     
 }

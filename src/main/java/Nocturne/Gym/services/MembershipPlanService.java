@@ -71,6 +71,14 @@ public class MembershipPlanService {
     MembershipPlan updatedPlan = membershipPlanRepository.save(foundPlan);
     return MembershipPlanResponseDTO.from(updatedPlan);
     }
+
+    @Transactional 
+    public void deletePlanby(Long id){ 
+        if(!memberRepository.existsById(id)){ 
+            memberRepository.deleteById(id);
+        }
+        throw new MembershipPlanNotFoundException("No plan with id " + id); 
+    }
     
 
 
