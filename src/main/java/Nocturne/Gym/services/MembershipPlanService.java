@@ -16,12 +16,11 @@ import java.util.*;
 @Service 
 public class MembershipPlanService {
     
-    private final Nocturne.Gym.repositories.MemberRepository memberRepository;
+
     private final MembershipPlanRepository membershipPlanRepository; 
 
     public MembershipPlanService(MembershipPlanRepository a, Nocturne.Gym.repositories.MemberRepository memberRepository){ 
         this.membershipPlanRepository = a;
-        this.memberRepository = memberRepository;
     }
 
     public List<MembershipPlanResponseDTO> getAllMembershipPlan(){ 
@@ -74,17 +73,10 @@ public class MembershipPlanService {
 
     @Transactional 
     public void deleteMembershipPlan(Long id){ 
-        if(!memberRepository.existsById(id)){ 
-            memberRepository.deleteById(id);
+        if(!membershipPlanRepository.existsById(id)){ 
+           throw new MembershipPlanNotFoundException("No plan with id " + id); 
         }
-        throw new MembershipPlanNotFoundException("No plan with id " + id); 
+        membershipPlanRepository.deleteById(id);
     }
     
-
-
-
-
-
-
-
 }
